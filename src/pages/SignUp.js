@@ -3,7 +3,6 @@ import styled from "styled-components";
 import SearchIcon from '@mui/icons-material/Search';
 import { emailCheckCM, existCheck,idCheckCM,pwCheckCM } from "../shared/common";
 import PopupDom from "../components/PopupDom";
-import PopupPostCode from "../components/PopupPostCode";
 import DaumPostcode from "react-daum-postcode";
 
 

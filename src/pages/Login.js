@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const id_ref = useRef();
+    const pw_ref = useRef();
+    const navigate = useNavigate();
+
+    const clickedLogin = () => {
+        navigate("/");
+    }
     return(
         <WholeContainer>
             <Container>
@@ -10,10 +18,12 @@ const Login = () => {
                     <Input 
                     type="text"
                     placeholder="아이디를입력해주세요"
+                    ref={id_ref}
                     />
                     <Input 
                     type="text"
                     placeholder="비밀번호를 입력해주세요"
+                    ref={pw_ref}
                     />
                     <LoginWrap>
                         <span>
@@ -22,8 +32,10 @@ const Login = () => {
                         </span>
                         <span>아이디찾기|비밀번호찾기</span>
                     </LoginWrap>
-                    <Button>로그인</Button> 
-                    <Button2>회원가입</Button2>
+                    <Button onClick={clickedLogin}>로그인</Button> 
+                    <Button2 onClick={()=>{
+                        navigate("/signup")
+                    }}>회원가입</Button2>
                 </InputBox>
             </Container>
         </WholeContainer>
