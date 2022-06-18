@@ -1,10 +1,96 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
+import { emailCheckCM, existCheck,idCheckCM,pwCheckCM } from "../shared/common";
+import PopupDom from "../components/PopupDom";
+import PopupPostCode from "../components/PopupPostCode";
+import DaumPostcode from "react-daum-postcode";
 
 
 const SignUp = () => {
+    const id_ref = useRef()
+    const pw1_ref = useRef();
+    const pw2_ref = useRef();
+    const name_ref = useRef();
+    const email_ref = useRef();
+    
+    const [address,setAddress] = useState('');
+    const [addressZcode,setAddressZcode] = useState('');
+
+    //주소 관리
+        //팝업창 상태관리 
+    const [isPopupOpen,setIsPopupOpen] = useState(false);
+    
+        //팝업창 열기
+    const openPostCode = () => {
+        setIsPopupOpen(true);
+    }
+    //팝업창 닫기
+    const closePostCode = () => {
+        setIsPopupOpen(false)
+    }
+
+    // 추후 분리예정....
+    const PopupPostCode = () => {
+        // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
+        const onCompletePost = (data) => {
+            let fullAddress = data.address;
+            let extraAddress = ''; 
+    
+            if (data.addressType === 'R') {
+              if (data.bname !== '') {
+                extraAddress += data.bname;
+              }
+              if (data.buildingName !== '') {
+                extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+              }
+              fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+            }
+            console.log(data)
+            //주소
+            console.log(fullAddress)
+            //우편번호
+            console.log(data.zonecode)
+            //props에 있는 closePostCode()함수실행
+            
+            setAddress(fullAddress);
+            setAddressZcode(data.zonecode)
+            closePostCode();
+        }
+     
+        const postCodeStyle = {
+            display: "block",
+            position: "absolute",
+            top: "10%",
+            width: "500px",
+            height: "400px",
+            padding: "7px",
+          };
+     
+        return(
+            <div>
+                <DaumPostcode style={postCodeStyle} onComplete={onCompletePost} />
+            </div>
+        )
+    }
+   
+    const CheckId= () => {
+        console.log(id_ref.current.value);
+        idCheckCM(id_ref.current.value)
+    }
+
+    const signUpCheck = () => {
+        //중복검사 안누르면 확인안되는 함수만들기 -useSelector로 username없으면 alert띄우기
+        if(!pwCheckCM(pw1_ref.current.value,pw2_ref.current.value)){
+            return false;
+        }else if(!existCheck(name_ref.current.value,"이름을")){
+            return false;
+        }else if(!emailCheckCM(email_ref.current.value)){
+            return false;
+        }
+        return true;
+    }
+    
     return (
         <WholeContainer>
         <Container>
@@ -17,7 +103,8 @@ const SignUp = () => {
                         <td>아이디<SpanRed>*</SpanRed></td>
                         <td><Input 
                         type="text"
-                        placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+                        placeholder="6~12자의 영문 혹은 영문과 숫자를 조합"
+                        ref={id_ref}
                         /></td>
                         <td><button style={{
                             width:"100%",
@@ -28,14 +115,17 @@ const SignUp = () => {
                             fontSize: "14px",
                             cursor: "pointer",
                             color: "#5f0080",
-                    }}>중복확인</button></td>
+                    }} 
+                        onClick={CheckId}                    
+                    >중복확인</button></td>
                     </tr>
                     <tr>
                         <td>비밀번호<SpanRed>*</SpanRed></td>
                         <td><Input 
                         type="text"
                         placeholder="비밀번호를 입력해주세요"
-                                    /></td>
+                        ref={pw1_ref}
+                        /></td>
 
                     </tr>
                     <tr>
@@ -43,6 +133,7 @@ const SignUp = () => {
                         <td><Input 
                         type="text"
                         placeholder="비밀번호를 한번 더 입력해주세요"
+                        ref={pw2_ref}
                         /></td>
                     </tr>
                     <tr>
@@ -50,6 +141,7 @@ const SignUp = () => {
                         <td><Input 
                         type="text"
                         placeholder=" 이름을 입력해주세요"
+                        ref={name_ref}
                         /></td>
                     </tr>
                     <tr>
@@ -57,6 +149,7 @@ const SignUp = () => {
                         <td><Input 
                         type="text"
                         placeholder="예: maketkurly@kurly.com"
+                        ref={email_ref}
                         /></td>
                     </tr>
                     <tr>
@@ -66,6 +159,8 @@ const SignUp = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 }}>
+                            { !address ? (
+                                <>
                                 <button style={{
                                     width: "82%",
                                     height: "40px",
@@ -80,9 +175,23 @@ const SignUp = () => {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     color: "#5f0080",
-                                    }}>
+                                    }}
+                                    onClick={openPostCode}
+                                    >
                                         <span><SearchIcon/></span>
                                         주소검색</button>
+                                <div id="popupDom">
+                                    {isPopupOpen && (
+                                        <PopupDom>
+                                            <PopupPostCode/>
+                                        </PopupDom>
+                                    )
+                                    }
+                                </div></>):(
+                                <AddressDiv>  
+                                    배송지:{address},{addressZcode}
+                                </AddressDiv>)
+                                    }
                                 <div style={{
                                     fontSize: "13px",
                                     margin: "0 auto",
@@ -90,7 +199,6 @@ const SignUp = () => {
                                 >배송지에 따라 상품 정보가 달라질 수 있습니다.</div>
                             </div>
                         </td>
-                        
                     </tr>
                 </InputTable>
             </InputBox>
@@ -98,7 +206,7 @@ const SignUp = () => {
                 display: "flex",
                 justifyContent: "center",
                 margin: "30px"
-            }}><Button>가입하기</Button>
+            }}><Button onClick={signUpCheck} >가입하기</Button>
             </div>          
         </Container>
         </WholeContainer>
@@ -122,7 +230,6 @@ const SignUpText = styled.div`
     justify-content: center;
     font-size: x-large;
     font-weight: 600;
-    
 `;
 const SpanRed = styled.span`
     color: red;
@@ -165,6 +272,7 @@ const InputTable = styled.table`
         width: 20%;;
     }
 `;
+
 const Input = styled.input`
     width: 80%;
     height: 40px;
@@ -172,6 +280,16 @@ const Input = styled.input`
     border: 2px solid #c0c0c0;
     margin: 0 0 0 50px;
     padding: 0 0 0 10px;
+`;
+const AddressDiv =  styled.div`
+    border: 2px solid #c0c0c0;
+    width: 80%;
+    height: 40px;
+    margin: 0 0 0 50px;
+    padding: 0 0 0 10px;
+    color: #554949;
+    font-size: 13px;
+    font-weight: 500;
 `;
 const Button = styled.button`
     min-width: 40%;
