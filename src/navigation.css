@@ -1,13 +1,13 @@
 
 .swiper-button-next {
-    background: url("./next.png") no-repeat;
+    background: url("https://s3.ap-northeast-2.amazonaws.com/res.kurly.com/kurly/ico/2021/arrow_list_right_over_60_60.svg") no-repeat;
     
     background-size: 100% auto;
     background-position: center;
   }
   
   .swiper-button-prev {
-    background: url("./prev.png") no-repeat;
+    background: url("https://s3.ap-northeast-2.amazonaws.com/res.kurly.com/kurly/ico/2021/arrow_list_left_over_60_60.svg") no-repeat;
     background-size: 100% auto;
     background-position: center;
   }
