@@ -1,14 +1,22 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux";
+import { loginDB } from "../redux/moduels/user";
+
 
 const Login = () => {
     const id_ref = useRef();
     const pw_ref = useRef();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
 
     const clickedLogin = () => {
-        navigate("/");
+        dispatch(loginDB({
+            id:id_ref.current.value,
+            pw:pw_ref.current.value,
+        },() => navigate("/")))
     }
     return(
         <WholeContainer>

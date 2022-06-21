@@ -29,7 +29,7 @@ export const userLogin = (user) => {
 //회원가입 미들웨어
 export const signupDB = (user,callback) => {
     return function(dispatch) {
-        console.log(user);
+        // console.log(user);
         axios({
             method: "post",
             url: `${BASE_URL}/api/user/signup`,
@@ -72,6 +72,35 @@ export const idCheckDB = (userId) => {
 
     }
 }
+
+//로그인 미들웨어
+export const loginDB = (user,callback) => {
+    return function(dispatch) {
+        console.log(user);
+        axios({
+            method: "post",
+            url: `${BASE_URL}/api/user/login`,
+            data: {
+                username:user.id,
+                password:user.pw,
+            },
+            }).then((response)=> {
+                console.log(response.data);
+                const token = response.data.accessToken;
+                localStorageSet("jwtToken", token);
+                if(response.data){
+                    window.alert("로그인 되었습니다");
+                    callback();
+                }
+            }).catch((err)=>{
+                console.log('login Error::',err);
+                window.alert("아이디와 비밀번호를 다시확인해주세요");
+            })
+    }
+}
+
+
+
 
 export default function reducer(state=initailState,action={}){
     switch(action.type) {
