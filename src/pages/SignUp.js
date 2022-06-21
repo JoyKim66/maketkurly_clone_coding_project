@@ -4,6 +4,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { emailCheckCM, existCheck,idCheckCM,pwCheckCM } from "../shared/common";
 import PopupDom from "../components/PopupDom";
 import DaumPostcode from "react-daum-postcode";
+import {useDispatch} from "react-redux";
+import { idCheckDB, signupDB } from "../redux/moduels/user";
+import {useNavigate} from "react-router-dom";
 
 
 const SignUp = () => {
@@ -12,6 +15,10 @@ const SignUp = () => {
     const pw2_ref = useRef();
     const name_ref = useRef();
     const email_ref = useRef();
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    console.log(navigate);
     
     const [address,setAddress] = useState('');
     const [addressZcode,setAddressZcode] = useState('');
@@ -75,11 +82,12 @@ const SignUp = () => {
    
     const CheckId= () => {
         console.log(id_ref.current.value);
-        idCheckCM(id_ref.current.value)
+        if(idCheckCM(id_ref.current.value)) {
+            dispatch(idCheckDB({id:id_ref.current.value}))
+        }
     }
 
     const signUpCheck = () => {
-        //중복검사 안누르면 확인안되는 함수만들기 -useSelector로 username없으면 alert띄우기
         if(!pwCheckCM(pw1_ref.current.value,pw2_ref.current.value)){
             return false;
         }else if(!existCheck(name_ref.current.value,"이름을")){
@@ -87,8 +95,15 @@ const SignUp = () => {
         }else if(!emailCheckCM(email_ref.current.value)){
             return false;
         }
-        return true;
-    }
+        // return true;
+        dispatch(signupDB({
+            id:id_ref.current.value,
+            pw:pw1_ref.current.value,
+            name:name_ref.current.value,
+            email:email_ref.current.value,
+        },() => navigate("/")
+        ))
+    };
     
     return (
         <WholeContainer>
@@ -119,6 +134,7 @@ const SignUp = () => {
                     >중복확인</button></td>
                     </tr>
                     <tr>
+                        {/* 비밀번호 타입 패스워드로 바꾸기 */}
                         <td>비밀번호<SpanRed>*</SpanRed></td>
                         <td><Input 
                         type="text"

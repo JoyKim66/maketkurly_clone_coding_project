@@ -7,7 +7,7 @@ import user from "./moduels/user"
 const middlewares = [thunk];
 const enhancer = applyMiddleware(...middlewares);
 const rootReducer = combineReducers({
-    user
+    user,
 })
 const store = createStore(rootReducer,enhancer);
 
