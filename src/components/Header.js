@@ -1,14 +1,21 @@
 // Header.js
 // 화면 창 줄어들었을 때 수정
 // 로그인시 뷰 필요
-import React from "react";
+import React, { useDebugValue } from "react";
 import styled from "styled-components";
 import ".././App.css";
 import { Link, useLocation } from "react-router-dom";
 import KurlyLogo from "../static/logo.jpeg";
 import Nav from "./Nav";
+import {useDispatch} from "react-redux"
+import { logoutDB } from "../redux/moduels/user";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(logoutDB())
+  }
   return (
     <HeaderWrap>
       <HeaderTop>
@@ -20,6 +27,7 @@ const Header = () => {
             <PurpleText>회원가입</PurpleText>
           </HeaderMenu>
           |<HeaderMenu> 로그인</HeaderMenu>|
+          <HeaderMenu onClick={logout}> 로그아웃 </HeaderMenu>|
           <HeaderMenu>고객센터 &nbsp; &#9662;</HeaderMenu>
         </HeaderRight>
       </HeaderTop>

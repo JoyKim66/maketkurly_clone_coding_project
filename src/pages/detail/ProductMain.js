@@ -2,16 +2,19 @@
 // ProductOrder css
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import {useDispatch} from "react-redux"
+
+import {addCartDB} from "../../redux/moduels/cart"
 
 const Sum = (price, num) => {
   return price * num;
 };
 
-const AddCart = () => {
-  window.alert("장바구니 담기 완료!");
-};
+
 
 const ProductMain = () => {
+  const dispatch = useDispatch();
+  
   const [item, setItem] = useState([
     {
       productId: 1,
@@ -33,6 +36,7 @@ const ProductMain = () => {
   const data = item[0];
   console.log(data);
 
+
   //수량체크 및 가격반영
   const [num, setNum] = useState(1);
   const upCount = () => {
@@ -42,6 +46,15 @@ const ProductMain = () => {
     setNum(num > 0 ? num - 1 : 0);
   };
   const value = (e) => setNum(Number(e.target.value));
+
+  const AddCart = () => {
+    //보내는 데이터값 추후 수정
+    dispatch(addCartDB({
+      productId:data.productId,
+      quantity: num,
+      totalPrice: Sum(data.productPrice, num),
+    }))
+  };
 
   return (
     <ProductMainWrap>

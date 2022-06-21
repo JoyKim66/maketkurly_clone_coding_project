@@ -9,10 +9,9 @@ const Cart = () => {
             <MainText>장바구니</MainText>
             <Container>
             <CartListDiv><CartList/></CartListDiv>
-            <PayInfoDiv><PayInfo/></PayInfoDiv>
             </Container>
         </>
-        
+                  
     )
 }
 
@@ -31,10 +30,5 @@ const Container = styled.div`
     justify-content: center;
 `;
 const CartListDiv = styled.div`
-    width: 50%;
+    width: 70%;
 `;
-const PayInfoDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-`; 

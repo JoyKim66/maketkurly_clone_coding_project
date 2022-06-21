@@ -1,5 +1,5 @@
 import axios from "axios";
-import { localStorageGet,localStorageSet } from "../../shared/localStorage";
+import { localStorageGet,localStorageRemove,localStorageSet } from "../../shared/localStorage";
 import jwtDecode from "jwt-decode";
 import produce from 'immer';
 import { BASE_URL } from "../../assets/config";
@@ -98,7 +98,13 @@ export const loginDB = (user,callback) => {
             })
     }
 }
-
+//로그아웃 미들웨어
+export const logoutDB = () => {
+    return function(dispatch){
+        localStorageRemove("jwtToken");
+        window.alert("로그아웃 되었습니다");
+    }
+}
 
 
 
