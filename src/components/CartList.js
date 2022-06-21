@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import CartProductEach from "./CartProductEach";
+
 const CartList = () => {
     return (
         <>
@@ -13,7 +15,8 @@ const CartList = () => {
             <DeleteBtnDiv>선택삭제</DeleteBtnDiv>
         </Container>
         <CartListBox>
-            <CartListTxt>장바구니에 담긴 상품이 없습니다</CartListTxt>
+            {/* <CartListTxt>장바구니에 담긴 상품이 없습니다</CartListTxt> */}
+            <CartProductEach/>
         </CartListBox>
         <Container>
             <LabelSt>
