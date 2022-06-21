@@ -4,11 +4,15 @@
 import React from "react";
 import styled from "styled-components";
 import ".././App.css";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import KurlyLogo from "../static/logo.jpeg";
-import Nav from "./Nav";
 
 const Header = () => {
+  const islogin = useSelector((state) => state.user.is_login);
+  const user = useSelector((state) => state.user.user);
+  console.log(islogin, user);
+
   return (
     <HeaderWrap>
       <HeaderTop>
@@ -16,15 +20,38 @@ const Header = () => {
           <PurpleText>샛별·택배</PurpleText> 배송안내 &gt;
         </HeaderLeft>
         <HeaderRight>
-          <HeaderMenu>
+          {/* <HeaderMenu>
             <PurpleText>회원가입</PurpleText>
           </HeaderMenu>
-          |<HeaderMenu> 로그인</HeaderMenu>|
-          <HeaderMenu>고객센터 &nbsp; &#9662;</HeaderMenu>
+          |
+          <Link to="/login">
+            <HeaderMenu> 로그인</HeaderMenu>
+          </Link> */}
+          {islogin ? (
+            <div>
+              <HeaderMenu>
+                <PurpleText>${user.username} 님</PurpleText>
+              </HeaderMenu>
+              | <HeaderMenu> 로그아웃</HeaderMenu>
+              |<HeaderMenu>고객센터 &nbsp; &#9662;</HeaderMenu>
+            </div>
+          ) : (
+            <div>
+              <Link to="/signup"><HeaderMenu>
+                <PurpleText>회원가입</PurpleText>
+              </HeaderMenu></Link>
+              |
+              <Link to="/login">
+                <HeaderMenu> 로그인</HeaderMenu>
+              </Link>
+              |<HeaderMenu>고객센터 &nbsp; &#9662;</HeaderMenu>
+            </div>
+          )}
+          
         </HeaderRight>
       </HeaderTop>
-      <Link to='/'>
-      <LogoImg src={KurlyLogo} />
+      <Link to="/">
+        <LogoImg src={KurlyLogo} />
       </Link>
     </HeaderWrap>
   );
@@ -68,6 +95,7 @@ const HeaderRight = styled.div`
 
 const HeaderMenu = styled.span`
   padding: 1px 10px;
+  
   &:hover {
     cursor: pointer;
   }

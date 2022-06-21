@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Cart from "./pages/Cart";
 import Detail from "./pages/detail/Detail";
+import ReviewWrite from "./pages/ReviewWrite";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" exact element={<Main />} />
         <Route path="/cart" exact element={<Cart />} />
         <Route path="/products" element={<Detail />} />
+        <Route path="/products/review" element={<ReviewWrite />} />
       </Routes>
       <Footer />
     </div>
