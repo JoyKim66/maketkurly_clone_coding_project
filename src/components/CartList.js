@@ -11,11 +11,54 @@ import DaumPostcode from "react-daum-postcode";
 const CartList = () => {
     console.log("카트목록" ,cartImg)
 
+   
+
     //payinfo
-    //금액 상태관리
-    const [quantity,setQuantity] = useState(1);
+    //수량,금액 상태관리
+    const [cartList,setCartList] = useState(cartImg);
     const [price,setPrice] = useState(0);
-    const [totalPrice,setTotalPrice] = useState(0);
+
+    
+    //임시로 mock카트목록 가져오기
+    const priceList = cartList.map((cart,idx)=> {
+        return cart.productPrice*cart.quantity
+    })
+    console.log('priceList::',priceList);
+    const totalPrice = priceList.reduce((acc,cur)=>{
+        return acc+cur
+    })
+    console.log('totalPrice::',totalPrice);
+
+
+    const addComma = (num) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
+
+    const upBtn = (e) => {
+        const newCartList = cartList.map((cart,idx)=>{
+            console.log(parseInt(e.target.value),cart.productId);
+            if (parseInt(e.target.value) === cart.productId){
+                return {...cart,quantity:cart.quantity+1}
+            }else{
+                return cart;
+            }
+        })
+        setCartList(newCartList)
+        console.log(newCartList);
+    }
+    const downBtn = (e) => {
+        const newCartList = cartList.map((cart,idx)=>{
+            console.log(parseInt(e.target.value),cart.productId);
+            if (parseInt(e.target.value) === cart.productId && cart.quantity > 0){
+                return {...cart,quantity:cart.quantity-1}
+            }else{
+                return cart;
+            }
+        })
+        setCartList(newCartList)
+        console.log(newCartList);
+    }
+    
 
     //주소 상태 관리
     const [address,setAddress] = useState('');
@@ -93,8 +136,8 @@ const CartList = () => {
                     {/* 합친부분1 */}
                     <CartListBox>
                         <Container>
-                            {cartImg && 
-                                cartImg.map((cart,idx)=>(
+                            {cartList && 
+                                cartList.map((cart,idx)=>(
                                     <>
                                     <ContentBox>
                                         <div style={{display:"flex"}}>
@@ -105,11 +148,12 @@ const CartList = () => {
                                         </div>
                                         <div>{cart.productName}</div>
                                         <ButtonWrap>
-                                            <MinusBtn/>
+                                            <MinusBtn value={cart.productId} onClick={downBtn}/>
                                             <Num>{cart.quantity}</Num>
-                                            <PlusBtn/>
+                                            <PlusBtn value={cart.productId} onClick={upBtn}/>
                                         </ButtonWrap>
-                                        <div>{cart.productPrice}원</div>
+                                        <div>{addComma(cart.quantity*cart.productPrice)   
+                                        }원</div>
                                         <DeleteBtn></DeleteBtn>
                                     </ContentBox>
                                     </>
@@ -156,7 +200,7 @@ const CartList = () => {
             <PayContainer>
                 <PayDiv>
                     <div>상품금액</div>
-                    <div>{productPrice}원</div>
+                    <div>{totalPrice}원</div>
                 </PayDiv>
                 <PayDiv>
                     <div>상품할인금액</div>
@@ -164,12 +208,12 @@ const CartList = () => {
                 </PayDiv>
                 <PayDiv>
                     <div>배송비</div>
-                    <div>0원</div>
+                    <div>+3,000원</div>
                 </PayDiv>
                 <hr/>
                 <PayDiv>
                     <div>결제예정금액</div>
-                    <div>{totalPrice}원</div>
+                    <div>{totalPrice+3000}원</div>
                 </PayDiv>
             </PayContainer>
             <div>

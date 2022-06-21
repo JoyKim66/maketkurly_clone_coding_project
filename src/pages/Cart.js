@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import CartList from "../components/CartList";
-import PayInfo from "../components/PayInfo";
 
 const Cart = () => {
     return (

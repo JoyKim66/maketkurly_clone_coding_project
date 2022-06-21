@@ -95,7 +95,6 @@ const PayInfo = () => {
                 }
             </div>
         </DestinationContainer>
-        
         <PayContainer>
             <PayDiv>
                 <div>상품금액</div>
@@ -127,10 +126,13 @@ const PayInfo = () => {
 }
 export default PayInfo;
 
+
+
 const DestinationContainer = styled.div`
     padding: 20px;
     border: 1px solid #f2f2f2
 `;
+
 const PayContainer = styled.div`
     padding: 20px;
     border: 1px solid #f2f2f2;
