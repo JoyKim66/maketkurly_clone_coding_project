@@ -5,9 +5,8 @@ import styled from "styled-components";
 import SearchIcon from '@mui/icons-material/Search';
 import DaumPostcode from "react-daum-postcode";
 
-import cartImg from "../elements/cartImg";
 import PopupDom from "./PopupDom";
-import { getCartDB } from "../redux/moduels/cart";
+import { deleteCartDB, getCartDB, orderCartDB } from "../redux/moduels/cart";
 
 
 const CartList = () => {
@@ -24,10 +23,13 @@ const CartList = () => {
     
     let totalPrice = 0
     if (cartList.length>0){
-        console.log(cartList);
     const priceList = cartList.map((cart,idx)=> {
         console.log(cart.price);
+        if(cart.checked){
         return cart.price*cart.quantity
+        }else{
+            return 0;
+        }
     })
     console.log('priceList::',priceList);
     totalPrice = priceList.reduce((acc,cur)=>{
@@ -41,10 +43,40 @@ const CartList = () => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
 
+    //각각 체크박스 관리
+    const clikedCheckbox = (e) => {
+        console.log("checkbox target::",e.target.value);
+        const checkboxList = cartList.map((cart,idx)=>{
+            if (parseInt(e.target.value) === cart.cartId) {
+                return {...cart,checked:!cart.checked}
+            }else{
+                return{...cart}
+            }
+        })
+        setCartList(checkboxList);
+    }
+    //전체 체크박스 관리
+
+    const [isAllClicked,setIsAllClicked] = useState(true);
+
+    const clickedAllCheckbox = (e) => {
+        console.log(isAllClicked);
+        const allCheckBoxList = cartList.map((cart,idx)=>{
+            if(isAllClicked){
+                setIsAllClicked(!isAllClicked)
+                return {...cart,checked:!isAllClicked}
+            }else{
+                setIsAllClicked(!isAllClicked)
+                return {...cart,checked:!isAllClicked}
+            }
+        })
+        setCartList(allCheckBoxList);
+    }
+
+
     const upBtn = (e) => {
         const newCartList = cartList.map((cart,idx)=>{
-            console.log(parseInt(e.target.value),cart.productId);
-            if (parseInt(e.target.value) === cart.productId){
+            if (parseInt(e.target.value) === cart.cartId){
                 return {...cart,quantity:cart.quantity+1}
             }else{
                 return cart;
@@ -55,8 +87,7 @@ const CartList = () => {
     }
     const downBtn = (e) => {
         const newCartList = cartList.map((cart,idx)=>{
-            console.log(parseInt(e.target.value),cart.productId);
-            if (parseInt(e.target.value) === cart.productId && cart.quantity > 0){
+            if (parseInt(e.target.value) === cart.cartId && cart.quantity > 0){
                 return {...cart,quantity:cart.quantity-1}
             }else{
                 return cart;
@@ -66,21 +97,39 @@ const CartList = () => {
         console.log(newCartList);
     }
 
-    // const deleteCart = (e) => {
-    //     const newCartList = cartList.filter((cart,idx)=>{
-            
-    //         return parseInt(e.target.value) !== cart.productId
-    //     });
-    //     console.log(newCartList);
-    //     setCartList(newCartList)        
-    // }
+    const deleteCart = (e) => {
+        dispatch(deleteCartDB(e.target.value));
+        const newCartList = cartList.filter((cart,idx)=>{
+            return parseInt(e.target.value) !== cart.cartId
+        });
+        setCartList(newCartList)        
+    }
     
+    const orderCart = () => {
+        //check된 것만 따로 뽑기
+        if(!address){
+            window.alert("배송지를 선택하세요")
+            return
+        }
+        const allAddress = address + addressZcode
+        const TrueOrderCartList = cartList.filter((cart,idx)=>{
+            return cart.checked === true
+        })
+        const orderCartList = TrueOrderCartList.map((cart,idx)=>{
+            return {productId:cart.productId, 
+                quantity:cart.quantity, 
+                totalPrice:cart.quantity*cart.price}
+        })
+        console.log({address:allAddress,product:orderCartList,payment:totalPrice+3000});
+        dispatch(orderCartDB({address:allAddress,product:orderCartList,payment:totalPrice+3000}))
+        
+    } 
+
 
     //주소 상태 관리
     const [address,setAddress] = useState('');
     const [addressZcode,setAddressZcode] = useState('');
 
-    
     //팝업창 상태관리 
     const [isPopupOpen,setIsPopupOpen] = useState(false);
     
@@ -134,12 +183,16 @@ const CartList = () => {
             </div>
         )
     };
-    
+
     useEffect(()=>{
         dispatch(getCartDB());
     },[])
     useEffect(()=>{
-        setCartList(loadCartList)
+        const newLoadCartList = loadCartList.map((c,idx)=>(
+            {...c,checked:true}
+        ))
+        console.log("newLoadCartList",newLoadCartList);
+        setCartList(newLoadCartList)
     },[loadCartList])
    
 
@@ -148,7 +201,11 @@ const CartList = () => {
             <WholeContainer>
                 <Container1>
                     <LabelSt1>
-                        <CheckBox><InputSt1 type="checkbox"/></CheckBox>
+                        <CheckBox><InputSt1 
+                        onClick={clickedAllCheckbox}
+                         type="checkbox"
+                         checked={isAllClicked}
+                         /></CheckBox>
                         전체선택(0/1)
                     </LabelSt1>
                     <SpanSt>|</SpanSt>
@@ -165,19 +222,23 @@ const CartList = () => {
                                     <ContentBox>
                                         <div style={{display:"flex"}}>
                                             <LabelSt>
-                                                <InputSt type="checkbox"/>
+                                                <InputSt 
+                                                type="checkbox" 
+                                                value={cart.cartId} 
+                                                checked={cart.checked}
+                                                onClick={clikedCheckbox} />
                                             </LabelSt>
                                             <Img src={cart.productImage}/>
                                         </div>
                                         <div>{cart.productName}</div>
                                         <ButtonWrap>
-                                            <MinusBtn value={cart.productId} onClick={downBtn}/>
+                                            <MinusBtn value={cart.cartId} onClick={downBtn}/>
                                             <Num>{cart.quantity}</Num>
-                                            <PlusBtn value={cart.productId} onClick={upBtn}/>
+                                            <PlusBtn value={cart.cartId} onClick={upBtn}/>
                                         </ButtonWrap>
                                         <div>{addComma(cart.quantity*cart.price)   
                                         }원</div>
-                                        <DeleteBtn/>
+                                        <DeleteBtn value={cart.cartId} onClick={deleteCart}/>
                                     </ContentBox>
                                     </>
                                 ))
@@ -242,7 +303,7 @@ const CartList = () => {
                 </PayDiv>
             </PayContainer>
             <div>
-                <OrderButton>주문하기</OrderButton>
+                <OrderButton onClick={orderCart}>주문하기</OrderButton>
             </div>
             <NoticeDiv>
                 <span>⚬ [배송준비중] 이전까지 주문 취소 가능합니다.</span>

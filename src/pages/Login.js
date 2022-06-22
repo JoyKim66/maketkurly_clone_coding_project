@@ -29,7 +29,7 @@ const Login = () => {
                     ref={id_ref}
                     />
                     <Input 
-                    type="text"
+                    type="password"
                     placeholder="비밀번호를 입력해주세요"
                     ref={pw_ref}
                     />

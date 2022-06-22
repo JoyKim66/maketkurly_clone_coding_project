@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import {useDispatch} from "react-redux"
+import { useNavigate } from "react-router-dom";
 
 import {addCartDB} from "../../redux/moduels/cart"
 
@@ -14,10 +15,11 @@ const Sum = (price, num) => {
 
 const ProductMain = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const [item, setItem] = useState([
     {
-      productId: 1,
+      productId: 2,
       productName: "[폴 바셋] 바리스타 돌체라떼 300ml",
       subTitle: "간편하게 맛보는 달콤한 풍미",
       salesUnit: "1개",
@@ -53,7 +55,7 @@ const ProductMain = () => {
       productId:data.productId,
       quantity: num,
       totalPrice: Sum(data.productPrice, num),
-    }))
+    },() => navigate("/cart")))
   };
 
   return (
