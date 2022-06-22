@@ -1,35 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch,useSelector } from "react-redux";
+
 import styled from "styled-components";
-
-import cartImg from "../elements/cartImg";
-
-import PopupDom from "./PopupDom";
 import SearchIcon from '@mui/icons-material/Search';
-
 import DaumPostcode from "react-daum-postcode";
 
-const CartList = () => {
-    console.log("카트목록" ,cartImg)
+import cartImg from "../elements/cartImg";
+import PopupDom from "./PopupDom";
+import { getCartDB } from "../redux/moduels/cart";
 
-   
+
+const CartList = () => {
+    const dispatch = useDispatch();
+    const loadCartList = useSelector(state=>state.cart);
+    console.log("loadCartList::",loadCartList);
+
 
     //payinfo
     //수량,금액 상태관리
-    const [cartList,setCartList] = useState(cartImg);
-    const [price,setPrice] = useState(0);
+    const [cartList,setCartList] = useState(loadCartList);
+    console.log('CART_list :', cartList);
 
     
-    //임시로 mock카트목록 가져오기
+    let totalPrice = 0
+    if (cartList.length>0){
+        console.log(cartList);
     const priceList = cartList.map((cart,idx)=> {
-        return cart.productPrice*cart.quantity
+        console.log(cart.price);
+        return cart.price*cart.quantity
     })
     console.log('priceList::',priceList);
-    const totalPrice = priceList.reduce((acc,cur)=>{
+    totalPrice = priceList.reduce((acc,cur)=>{
         return acc+cur
     })
+    }
     console.log('totalPrice::',totalPrice);
 
-
+    //금액을 콤마로 구분해줄 함수
     const addComma = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
@@ -58,6 +65,15 @@ const CartList = () => {
         setCartList(newCartList)
         console.log(newCartList);
     }
+
+    // const deleteCart = (e) => {
+    //     const newCartList = cartList.filter((cart,idx)=>{
+            
+    //         return parseInt(e.target.value) !== cart.productId
+    //     });
+    //     console.log(newCartList);
+    //     setCartList(newCartList)        
+    // }
     
 
     //주소 상태 관리
@@ -117,8 +133,15 @@ const CartList = () => {
                 <DaumPostcode style={postCodeStyle} onComplete={onCompletePost} />
             </div>
         )
-    }
-    // -----
+    };
+    
+    useEffect(()=>{
+        dispatch(getCartDB());
+    },[])
+    useEffect(()=>{
+        setCartList(loadCartList)
+    },[loadCartList])
+   
 
     return (
         <WholeContainerWrap>
@@ -131,10 +154,10 @@ const CartList = () => {
                     <SpanSt>|</SpanSt>
                     <DeleteBtnDiv>선택삭제</DeleteBtnDiv>
                 </Container1>
-                
-                    {/* <CartListTxt>장바구니에 담긴 상품이 없습니다</CartListTxt> */}
-                    {/* 합친부분1 */}
                     <CartListBox>
+                    {cartList.length === 0? (
+                        <CartListTxt>장바구니에 담긴 상품이 없습니다</CartListTxt>
+                        ):(
                         <Container>
                             {cartList && 
                                 cartList.map((cart,idx)=>(
@@ -152,15 +175,17 @@ const CartList = () => {
                                             <Num>{cart.quantity}</Num>
                                             <PlusBtn value={cart.productId} onClick={upBtn}/>
                                         </ButtonWrap>
-                                        <div>{addComma(cart.quantity*cart.productPrice)   
+                                        <div>{addComma(cart.quantity*cart.price)   
                                         }원</div>
-                                        <DeleteBtn></DeleteBtn>
+                                        <DeleteBtn/>
                                     </ContentBox>
                                     </>
                                 ))
                             }
                         </Container>
+                            )}
                     </CartListBox>
+                    
                     {/* ----합친부분1끝 */}
                 <Container1>
                     <LabelSt>
