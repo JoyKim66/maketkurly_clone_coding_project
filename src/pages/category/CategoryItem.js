@@ -7,11 +7,11 @@ const CategoryItem = ({ card }) => {
   const navigate = useNavigate();
 
   return (
-    <CategoryItemWrap onClick={() => navigate("/products/"+card.productId)}>
-      <img src={card.thumbnailUrl.toString()} alt="카테고리 상품" />
-      <Name>{card.productName}</Name>
+    <CategoryItemWrap onClick={() => navigate("/products/"+card.id)}>
+      <img src={card.imageUrl.toString()} alt="카테고리 상품" />
+      <Name>{card.name}</Name>
       <Price>
-        {card.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+        {card.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
       </Price>
     </CategoryItemWrap>
   );
