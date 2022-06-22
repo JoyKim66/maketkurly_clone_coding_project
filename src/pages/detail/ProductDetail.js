@@ -6,7 +6,9 @@ import { Link } from "react-scroll";
 import Review from "./Review";
 import detailImg from "../../static/detail.png";
 
+
 const ProductDetail = () => {
+
   const [item, setItem] = useState([
     {
       productId: 1,

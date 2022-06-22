@@ -1,4 +1,4 @@
-// Footer
+// Nav
 // 검색어 css 수정중
 // 윈도우창 줄어들었을때 글씨 움직이지 않게 수정하기
 // 스크롤시 고정하기
@@ -10,8 +10,11 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
+  const navigate = useNavigate();
+
   return (
     <NavWrap>
       <MenuWrap>
@@ -20,13 +23,12 @@ const Nav = () => {
           전체 카테고리
         </MenuAll>
 
-          <MenuCategory>
-            <CategoryList>신상품</CategoryList>
-            <CategoryList>베스트</CategoryList>
-            <CategoryList>알뜰쇼핑</CategoryList>
-            <CategoryList>특가/혜택</CategoryList>
-          </MenuCategory>
-
+        <MenuCategory onClick={() => navigate("/category")}>
+          <CategoryList>신상품</CategoryList>
+          <CategoryList>베스트</CategoryList>
+          <CategoryList>알뜰쇼핑</CategoryList>
+          <CategoryList>특가/혜택</CategoryList>
+        </MenuCategory>
       </MenuWrap>
 
       <Search>

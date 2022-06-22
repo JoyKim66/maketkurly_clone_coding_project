@@ -1,43 +1,51 @@
 // 상세페이지 메인
 // ProductOrder css
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import {useDispatch} from "react-redux"
-import { useNavigate } from "react-router-dom";
-
-import {addCartDB} from "../../redux/moduels/cart"
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../../redux/moduels/post";
 
 const Sum = (price, num) => {
   return price * num;
 };
 
+const AddCart = () => {
+  window.alert("장바구니 담기 완료!");
+};
 
-
-const ProductMain = () => {
+const ProductMain = ({ id }) => {
+  console.log(id);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  
-  const [item, setItem] = useState([
-    {
-      productId: 2,
-      productName: "[폴 바셋] 바리스타 돌체라떼 300ml",
-      subTitle: "간편하게 맛보는 달콤한 풍미",
-      salesUnit: "1개",
-      weight: "330ml",
-      shippingCategory: "샛별배송/택배배송",
-      origin: "프랑스",
-      packagingType: "냉장/스티로폼",
-      alergy: "- 우유 함유",
-      info: "- 패키지가 변경되어 변경된 패키지로 배송됩니다. 내용물은 동일하오니 참고 부탁드립니다.",
-      thumbnailUrl:
-        "https://www.baristapaulbassett.co.kr/upload/product/A/thumbnail_1_201903211107237211.jpg",
-      productPrice: 20000,
-    },
-  ]);
-  console.log(item[0]);
-  const data = item[0];
-  console.log(data);
+  const data2 = useSelector((state) => state.post.detail_post);
+  console.log(data2);
 
+  const [item, setItem] = useState({
+    productId: 1,
+    productName: "[폴 바셋] 바리스타 돌체라떼 300ml",
+    subTitle: "간편하게 맛보는 달콤한 풍미",
+    salesUnit: "1개",
+    weight: "330ml",
+    shippingCategory: "샛별배송/택배배송",
+    origin: "프랑스",
+    packagingType: "냉장/스티로폼",
+    alergy: "- 우유 함유",
+    info: "- 패키지가 변경되어 변경된 패키지로 배송됩니다. 내용물은 동일하오니 참고 부탁드립니다.",
+    thumbnailUrl:
+      "https://www.baristapaulbassett.co.kr/upload/product/A/thumbnail_1_201903211107237211.jpg",
+    productPrice: 20000,
+  });
+  console.log(item);
+  const data = item;
+
+  //상세페이지 로드 로드
+  React.useEffect(() => {
+    dispatch(postActions.detailPostDB(id));
+  }, []);
+
+  React.useEffect(() => {
+    setItem(data2);
+    console.log(item);
+  }, [data2]);
 
   //수량체크 및 가격반영
   const [num, setNum] = useState(1);
@@ -49,25 +57,16 @@ const ProductMain = () => {
   };
   const value = (e) => setNum(Number(e.target.value));
 
-  const AddCart = () => {
-    //보내는 데이터값 추후 수정
-    dispatch(addCartDB({
-      productId:data.productId,
-      quantity: num,
-      totalPrice: Sum(data.productPrice, num),
-    },() => navigate("/cart")))
-  };
-
   return (
     <ProductMainWrap>
       <ProductImage
-        src={data.thumbnailUrl}
-        alt={data.productName}
+        src={item.thumbnailUrl}
+        alt={item.productName}
       ></ProductImage>
       <ProductAbout>
         <ProductName>
-          <NameTitle>{data.productName}</NameTitle>
-          <NameDetail>{data.subTitle}</NameDetail>
+          <NameTitle>{item.productName}</NameTitle>
+          <NameDetail>{item.subTitle}</NameDetail>
         </ProductName>
         <ProductPrice>
           {data.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -85,27 +84,27 @@ const ProductMain = () => {
           <tbody>
             <tr>
               <td style={{ width: "22%", paddingTop: "16px" }}>판매단위</td>
-              <td style={{ paddingTop: "16px" }}>{data.salesUnit}</td>
+              <td style={{ paddingTop: "16px" }}>{item.salesUnit}</td>
             </tr>
             <tr>
               <Td>중량/용량</Td>
-              <Td>{data.weight}</Td>
+              <Td>{item.weight}</Td>
             </tr>
             <tr>
               <Td>배송구분</Td>
-              <Td>{data.shippingCategory}</Td>
+              <Td>{item.shippingCategory}</Td>
             </tr>
             <tr>
               <Td>포장타입</Td>
-              <Td>{data.packagingType}</Td>
+              <Td>{item.packagingType}</Td>
             </tr>
             <tr>
               <Td>알레르기정보</Td>
-              <Td>{data.alergy}</Td>
+              <Td>{item.alergy}</Td>
             </tr>
             <tr>
               <Td>안내사항</Td>
-              <Td>{data.info}</Td>
+              <Td>{item.info}</Td>
             </tr>
             <tr>
               <Td>구매수량</Td>
@@ -159,7 +158,7 @@ const ProductImage = styled.img`
 `;
 
 const ProductAbout = styled.div`
-  //   background-color: rgb(0, 0, 0, 0.1);
+    // background-color: rgb(0, 0, 0, 0.1);
   width: 53%;
   text-align: left;
   padding-left: 4px;
