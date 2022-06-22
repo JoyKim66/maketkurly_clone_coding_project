@@ -137,7 +137,7 @@ const SignUp = () => {
                         {/* 비밀번호 타입 패스워드로 바꾸기 */}
                         <td>비밀번호<SpanRed>*</SpanRed></td>
                         <td><Input 
-                        type="text"
+                        type="password"
                         placeholder="비밀번호를 입력해주세요"
                         ref={pw1_ref}
                         /></td>
@@ -146,7 +146,7 @@ const SignUp = () => {
                     <tr>
                         <td>비밀번호확인<SpanRed>*</SpanRed></td>
                         <td><Input 
-                        type="text"
+                        type="password"
                         placeholder="비밀번호를 한번 더 입력해주세요"
                         ref={pw2_ref}
                         /></td>

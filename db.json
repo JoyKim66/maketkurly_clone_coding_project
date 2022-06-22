@@ -1,0 +1,32 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+    "add_cart" : [
+        {
+            "productId": 1,
+            "quantity": 5,
+            "totalPrice": 21500
+        },
+        {
+            "productId": 2,
+            "quantity": 10,
+            "totalPrice": 21500
+        }
+    ]
+
+}

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const SlideCard = ({card}) => {
-    console.log('card',card);
+    // console.log('card',card);
     return(
         <CardDiv>
         <ImgDiv>

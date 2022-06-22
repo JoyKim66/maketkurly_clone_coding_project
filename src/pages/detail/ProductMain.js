@@ -2,19 +2,24 @@
 // ProductOrder css
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import {useDispatch} from "react-redux"
+import { useNavigate } from "react-router-dom";
+
+import {addCartDB} from "../../redux/moduels/cart"
 
 const Sum = (price, num) => {
   return price * num;
 };
 
-const AddCart = () => {
-  window.alert("장바구니 담기 완료!");
-};
+
 
 const ProductMain = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
   const [item, setItem] = useState([
     {
-      productId: 1,
+      productId: 2,
       productName: "[폴 바셋] 바리스타 돌체라떼 300ml",
       subTitle: "간편하게 맛보는 달콤한 풍미",
       salesUnit: "1개",
@@ -33,6 +38,7 @@ const ProductMain = () => {
   const data = item[0];
   console.log(data);
 
+
   //수량체크 및 가격반영
   const [num, setNum] = useState(1);
   const upCount = () => {
@@ -42,6 +48,15 @@ const ProductMain = () => {
     setNum(num > 0 ? num - 1 : 0);
   };
   const value = (e) => setNum(Number(e.target.value));
+
+  const AddCart = () => {
+    //보내는 데이터값 추후 수정
+    dispatch(addCartDB({
+      productId:data.productId,
+      quantity: num,
+      totalPrice: Sum(data.productPrice, num),
+    },() => navigate("/cart")))
+  };
 
   return (
     <ProductMainWrap>
