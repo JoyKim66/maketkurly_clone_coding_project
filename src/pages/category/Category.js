@@ -35,7 +35,7 @@ const Category = (props) => {
       </Products>
     </CategoryWrap>
   );
-};
+}
 
 const CategoryWrap = styled.div`
   // background-color: rgb(0, 0, 0, 0.05);
