@@ -12,6 +12,8 @@ import Main from "./pages/Main";
 import Cart from "./pages/Cart";
 import Detail from "./pages/detail/Detail";
 import ReviewWrite from "./pages/ReviewWrite";
+import Category from "./pages/category/Category";
+
 
 function App() {
   return (
@@ -23,8 +25,9 @@ function App() {
         <Route path="/signup" exact element={<SignUp />} />
         <Route path="/" exact element={<Main />} />
         <Route path="/cart" exact element={<Cart />} />
-        <Route path="/products" element={<Detail />} />
-        <Route path="/products/review" element={<ReviewWrite />} />
+        <Route path="/products/:productId" element={<Detail />} />
+        <Route path="/products/:productId/review" element={<ReviewWrite />} />
+        <Route path="/category" exact element={<Category />} />
       </Routes>
       <Footer />
     </div>
