@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { actionCreators as mainActions } from "../redux/moduels/main"
+
 
 import cardImg from "../elements/cardImg";
 
@@ -16,8 +19,31 @@ import styled from "styled-components";
 
 
 const ContensCard = () => {
+    const dispatch = useDispatch();
+
+    //store에서 받아온 데이터 카테고리별로 나누기
+    const cardList = useSelector(state=>state.main.card);
+    const category1 = cardList.filter((card,idx) => {
+        return card.category === "이 상품 어때요?"
+    });
+    const category2 = cardList.filter((card,idx) => {
+        return card.category === "놓치면 후회할 가격"
+    });
+    const category3 = cardList.filter((card,idx) => {
+        return card.category === "알뜰하게 장바구니 채우기"
+    });
+    const category4 = cardList.filter((card,idx) => {
+        return card.category === "지금 가장 핫한 상품"
+    });
+    const category5 = cardList.filter((card,idx) => {
+        return card.category === "마감세일"
+    });
+   
     SwiperCore.use([Navigation]);
 
+    useEffect(()=>{
+        dispatch(mainActions.getCardListDB());
+    },[])
     return(
         <>
         <CategoryText>
@@ -31,7 +57,7 @@ const ContensCard = () => {
             loop={true}
             modules={[Navigation]}
             >
-                    {cardImg.map((card,idx)=>(
+                    {category1.map((card,idx)=>(
                     <SwiperSlide key={card.id}><SlideCard card={card} /></SwiperSlide>
                     ))}
             </Swiper>
@@ -54,7 +80,7 @@ const ContensCard = () => {
             loop={true}
             modules={[Navigation]}
             >
-                    {cardImg.map((card,idx)=>(
+                    {category2.map((card,idx)=>(
                     <SwiperSlide key={card.id}><SlideCard card={card} /></SwiperSlide>
                     ))}
             </Swiper>
@@ -72,14 +98,14 @@ const ContensCard = () => {
             loop={true}
             modules={[Navigation]}
             >
-                    {cardImg.map((card,idx)=>(
+                    {category3.map((card,idx)=>(
                     <SwiperSlide key={card.id}><SlideCard card={card} /></SwiperSlide>
                     ))}
             </Swiper>
         </Container>
 
         <MiddleBannerDiv>
-        <MiddleBannerImg src="https://img-cf.kurly.com/banner/random-band/pc/img/e794055a-a3ce-436c-9998-62495971b580"/>
+        <MiddleBannerImg src="https://img-cf.kurly.com/banner/random-band/pc/img/8ded70f9-bca2-4a70-b290-beb571ff82ab"/>
         </MiddleBannerDiv>
 
         <CategoryText2>
@@ -94,7 +120,25 @@ const ContensCard = () => {
             loop={true}
             modules={[Navigation]}
             >
-                    {cardImg.map((card,idx)=>(
+                    {category4.map((card,idx)=>(
+                    <SwiperSlide key={card.id}><SlideCard card={card} /></SwiperSlide>
+                    ))}
+            </Swiper>
+        </Container>
+
+        <CategoryText2>
+        이것만 담아도 장바구니 뚝딱! >
+        </CategoryText2>
+        <CategorySubText>장바구니를 한 번에 채울 수 있는 장바구니 필수템!!</CategorySubText>
+        <Container>
+            <Swiper 
+            spaceBetween={0}
+            slidesPerView={4}
+            navigation={true}
+            loop={true}
+            modules={[Navigation]}
+            >
+                    {category5.map((card,idx)=>(
                     <SwiperSlide key={card.id}><SlideCard card={card} /></SwiperSlide>
                     ))}
             </Swiper>

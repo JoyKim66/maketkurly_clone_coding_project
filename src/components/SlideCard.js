@@ -8,10 +8,14 @@ const SlideCard = ({card}) => {
         <ImgDiv>
             <CartImg src="https://s3.ap-northeast-2.amazonaws.com/res.kurly.com/kurly/ico/2021/cart_white_45_45.svg"/>
             <Img
-            src={card.src}/>
+            src={card.imageUrl}/>
         </ImgDiv>
-        <AltDiv>{card.alt}</AltDiv>
-        <PriceDiv>{card.price}</PriceDiv>
+        <AltDiv>{card.name}</AltDiv>
+        <PriceDiv>{
+            Number(card.price)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        원</PriceDiv>
         
         </CardDiv>
 

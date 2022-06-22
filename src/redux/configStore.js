@@ -5,13 +5,15 @@ import thunk from "redux-thunk";
 import user from "./moduels/user"
 import cart from "./moduels/cart"
 import post from "./moduels/post"
+import main from "./moduels/main";
 
 const middlewares = [thunk];
 const enhancer = applyMiddleware(...middlewares);
 const rootReducer = combineReducers({
     user,
     cart,
-    post
+    post,
+    main,
 })
 const store = createStore(rootReducer,enhancer);
 

@@ -8,7 +8,7 @@ const Main = () => {
     return (
         <>
         <Slider/>
-            <ContensCard/>
+        <ContensCard/>
         </>
     )
 }
