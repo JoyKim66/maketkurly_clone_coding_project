@@ -13,10 +13,10 @@ const AddCart = () => {
   window.alert("장바구니 담기 완료!");
 };
 
-const ProductMain = ({ productId }) => {
-  console.log(productId);
+const ProductMain = ({ id }) => {
+  console.log(id);
   const dispatch = useDispatch();
-  const data2 = useSelector((state) => state.post.detail_post[productId]);
+  const data2 = useSelector((state) => state.post.detail_post);
   console.log(data2);
 
   const [item, setItem] = useState({
@@ -39,7 +39,7 @@ const ProductMain = ({ productId }) => {
 
   //상세페이지 로드 로드
   React.useEffect(() => {
-    dispatch(postActions.detailPostDB(productId));
+    dispatch(postActions.detailPostDB(id));
   }, []);
 
   React.useEffect(() => {

@@ -11,18 +11,18 @@ const Detail = (props) => {
   // /products/{productId}
   // /products/1에서 '1'을 읽음
     const params = useParams();
-    const productId = params.productId;
+    const id = params.productId;
 //   const location = useLocation();
 //   const sch = location.search;
 //   console.log(sch);
 //   const params = new URLSearchParams(sch);
 //   const productId = params.get("productId");
-  console.log(productId);
+  console.log(id);
 
   return (
     <DetailWrap>
-      <ProductMain productId={productId} />
-      <ProductDetail productId={productId} />
+      <ProductMain id={id} />
+      <ProductDetail id={id} />
     </DetailWrap>
   );
 };

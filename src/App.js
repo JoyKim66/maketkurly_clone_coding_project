@@ -25,7 +25,7 @@ function App() {
         <Route path="/signup" exact element={<SignUp />} />
         <Route path="/" exact element={<Main />} />
         <Route path="/cart" exact element={<Cart />} />
-        <Route path="/products/:productId" element={<Detail />} />
+        <Route path="/products/:productId/index/1" element={<Detail />} />
         <Route path="/products/:productId/review" element={<ReviewWrite />} />
         <Route path="/category" exact element={<Category />} />
       </Routes>

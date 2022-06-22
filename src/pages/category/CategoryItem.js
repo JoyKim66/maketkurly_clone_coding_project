@@ -7,7 +7,7 @@ const CategoryItem = ({ card }) => {
   const navigate = useNavigate();
 
   return (
-    <CategoryItemWrap onClick={() => navigate("/products/"+card.id)}>
+    <CategoryItemWrap onClick={() => navigate("/products/"+card.id+"/index/1")}>
       <img src={card.imageUrl.toString()} alt="카테고리 상품" />
       <Name>{card.name}</Name>
       <Price>

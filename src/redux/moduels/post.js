@@ -43,36 +43,19 @@ const getPostDB = () => {
   };
 };
 
-// 상품 상세 불러오기
-// const detailPostDB = (pid) => {
-//   return async function (dispatch, getState, { history }) {
-//     // console.log(pid);
-//     // let myToken = getCookie("Authorization")
-//     axios({
-//       method: "get",
-//       url: `http://3.38.153.67/api/products?productId=${pid}`,
-//     })
-//       .then((res) => {
-//         // const detail_list = res.data.product;
-//         dispatch(getDetail(res.data.product));
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-// };
-
+// 상세 정보 불러오기
 const detailPostDB = (productId) => {
   return async function (dispatch, getState) {
     // console.log(pid);
     await apis
         // .productList()
-        .productDetail()
+        .productDetail(productId)
       .then((res) => {
         console.log("******");
         console.log(res.data, "sub page data");
         console.log("******");
         dispatch(getDetail(res.data));
+        console.log("***** dispatch *****");
       })
       .catch((err) => {
         console.log("****** error *****");
@@ -85,15 +68,16 @@ export default handleActions(
   {
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.post.push(...action.payload.post);
-        console.log("성공");
+        // draft.post.push(...action.payload.post);
+        draft.post = action.payload.post;
+        console.log("GET_POST 성공");
       }),
 
     [GET_DETAIL]: (state, action) =>
       produce(state, (draft) => {
         // draft.detail_post = action.payload.detail_post;
-        draft.detail_post.push(...action.payload.detail_post);
-        console.log("성공");
+        draft.detail_post = action.payload.detail_post;
+        console.log("GET_DETAIL 성공");
       }),
   },
   initialState
