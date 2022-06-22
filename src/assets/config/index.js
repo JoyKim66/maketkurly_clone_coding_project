@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://sparta-hj.site';
+export const BASE_URL = 'http://15.165.160.84';

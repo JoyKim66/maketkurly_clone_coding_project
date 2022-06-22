@@ -236,8 +236,8 @@ const CartList = () => {
                                             <Num>{cart.quantity}</Num>
                                             <PlusBtn value={cart.cartId} onClick={upBtn}/>
                                         </ButtonWrap>
-                                        <div>{addComma(cart.quantity*cart.price)   
-                                        }원</div>
+                                        <PriceDiv>{addComma(cart.quantity*cart.price)   
+                                        }원</PriceDiv>
                                         <DeleteBtn value={cart.cartId} onClick={deleteCart}/>
                                     </ContentBox>
                                     </>
@@ -447,6 +447,10 @@ height: 78px;
 const ButtonWrap = styled.div`
     display: flex;
 `;
+const PriceDiv = styled.div`
+    width: 20%;
+`;
+
 const MinusBtn = styled.button`
     width: 28px;
     height: 28px;
