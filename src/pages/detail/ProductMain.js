@@ -4,18 +4,18 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../../redux/moduels/post";
+import { addCartDB } from "../../redux/moduels/cart";
+import { useNavigate } from "react-router-dom";
 
 const Sum = (price, num) => {
   return price * num;
 };
 
-const AddCart = () => {
-  window.alert("장바구니 담기 완료!");
-};
 
 const ProductMain = ({ id }) => {
   console.log(id);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const data2 = useSelector((state) => state.post.detail_post);
   console.log(data2);
 
@@ -36,6 +36,16 @@ const ProductMain = ({ id }) => {
   });
   console.log(item);
   const data = item;
+
+  //장바구니 담기 
+  const AddCart = () => {
+      dispatch(addCartDB({
+      productId:data.productId,
+      quantity: num,
+      totalPrice: Sum(data.productPrice, num),
+    },() => navigate("/cart")))
+  };
+  
 
   //상세페이지 로드 로드
   React.useEffect(() => {

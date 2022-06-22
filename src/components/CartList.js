@@ -230,7 +230,7 @@ const CartList = () => {
                                             </LabelSt>
                                             <Img src={cart.productImage}/>
                                         </div>
-                                        <div>{cart.productName}</div>
+                                        <ProductNameDiv>{cart.productName}</ProductNameDiv>
                                         <ButtonWrap>
                                             <MinusBtn value={cart.cartId} onClick={downBtn}/>
                                             <Num>{cart.quantity}</Num>
@@ -340,7 +340,10 @@ const LabelSt1 = styled.label`
     align-items: center;
     font-size: 14px;
 }
-
+`;
+const ProductNameDiv = styled.div`
+    width: 35%;
+    padding: 0 15% 0 0;
 `;
 const InputSt1 = styled.input`
     appearance: none;
@@ -407,7 +410,6 @@ const ContentBox = styled.div`
     border-bottom: 1px solid #eee;
     padding: 0 0 15px 0;
     align-items: center;
-    justify-content: space-around;
 `;
 const LabelSt = styled.label`
     user-select: none;
@@ -448,7 +450,8 @@ const ButtonWrap = styled.div`
     display: flex;
 `;
 const PriceDiv = styled.div`
-    width: 20%;
+    width: 12%;
+    padding: 0 0 0 10%;
 `;
 
 const MinusBtn = styled.button`
