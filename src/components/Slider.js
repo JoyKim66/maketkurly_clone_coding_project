@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import sliderImg from "../elements/sliderImg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as mainActions } from "../redux/moduels/main"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -12,21 +12,26 @@ import "../navigation.css";
 
 const Slider = () => {
     const dispatch = useDispatch();
+
+    const sliderList = useSelector(state=>state.main.slider.upsideImage);
+    console.log("sliderList",sliderList);
     
     useEffect(()=>{
         dispatch(mainActions.getSliderListDB());
     },[])
     return(
         <>
+        {sliderList &&
              <Swiper 
             navigation={true}
             loop={true}
             modules={[Navigation]}
             >
-                    {sliderImg.map((img,idx)=>(
-                    <SwiperSlide key={img.id}><img style={{width:"100%"}} src={img.src}/></SwiperSlide>
+                    {sliderList.map((img,idx)=>(
+                    <SwiperSlide key={img.id}><img style={{width:"100%"}} src={img}/></SwiperSlide>
                     ))}
             </Swiper>
+            }
         </>
     )
 }

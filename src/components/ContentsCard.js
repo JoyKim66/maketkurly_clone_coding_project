@@ -23,19 +23,20 @@ const ContensCard = () => {
 
     //store에서 받아온 데이터 카테고리별로 나누기
     const cardList = useSelector(state=>state.main.card);
-    const category1 = cardList.filter((card,idx) => {
+    console.log("cardList",cardList);
+    const category1 = cardList?.filter((card,idx) => {
         return card.category === "이 상품 어때요?"
     });
-    const category2 = cardList.filter((card,idx) => {
+    const category2 = cardList?.filter((card,idx) => {
         return card.category === "놓치면 후회할 가격"
     });
-    const category3 = cardList.filter((card,idx) => {
+    const category3 = cardList?.filter((card,idx) => {
         return card.category === "알뜰하게 장바구니 채우기"
     });
-    const category4 = cardList.filter((card,idx) => {
+    const category4 = cardList?.filter((card,idx) => {
         return card.category === "지금 가장 핫한 상품"
     });
-    const category5 = cardList.filter((card,idx) => {
+    const category5 = cardList?.filter((card,idx) => {
         return card.category === "마감세일"
     });
    
