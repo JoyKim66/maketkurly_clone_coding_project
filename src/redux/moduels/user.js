@@ -8,10 +8,13 @@ import produce from "immer";
 import { BASE_URL } from "../../assets/config";
 import { handleActions } from "redux-actions";
 import jwt_decode from "jwt-decode";
+import { actionCreators as mainActions } from "./main"
+
 
 //action type
 const LOGIN = "user/LOGIN";
 const SET_USER = "user/SET_USER";
+const LOG_OUT = "user/LOG_OUT";
 
 //initialState
 const initialState = {
@@ -25,6 +28,10 @@ export const userLogin = (user) => {
 };
 
 export const setUser = (user) => {
+  return { type: SET_USER, user };
+};
+
+export const logout = (user) => {
   return { type: SET_USER, user };
 };
 
@@ -93,12 +100,13 @@ export const loginDB = (user, callback) => {
       .then((response) => {
         console.log(response.data);
         const token = response.data.accessToken;
+        const DecodedToken = jwt_decode(token);
         localStorageSet("jwtToken", token);
         if (response.data) {
           dispatch(
             setUser({
               username: user.id,
-              nickname: user.id,
+              nickname: DecodedToken.nickname,
             })
           );
           window.alert("로그인 되었습니다");
@@ -108,34 +116,19 @@ export const loginDB = (user, callback) => {
       .catch((err) => {
         console.log("login Error::", err);
         window.alert("아이디와 비밀번호를 다시확인해주세요");
+  
       });
   };
 };
 
-//로그인 유지
-export const loginCheck = () => {
-  return function (dispatch) {
-    const is_token = localStorageGet("jwtToken");
-    const decoded = jwt_decode(is_token);
-    console.log(decoded);
-    const user = localStorageGet("jwtToken") ? true : false;
-    if (user) {
-      dispatch(
-        setUser({
-          username: decoded.Username,
-        })
-      );
-    } else {
-      console.log("로그인 상태가 아닙니다");
-    }
-  };
-};
 
 //로그아웃 미들웨어
 export const logoutDB = () => {
   return function (dispatch) {
     localStorageRemove("jwtToken");
+    dispatch(logout())
     window.alert("로그아웃 되었습니다");
+    window.location.replace("/");
   };
 };
 
@@ -144,14 +137,22 @@ export default handleActions(
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
         // draft.user = action.payload.user;
+        console.log(state,action)
         draft.is_login = true;
+        draft.user = action.user
+      }),
+      [LOG_OUT]: (state, action) =>
+      produce(state, (draft) => {
+				localStorageRemove("jwtToken");
+        draft.user = null;
+        draft.is_login = false;
       }),
   },
   initialState
 );
 
 const actionCreators = {
-  loginCheck,
+
 };
 
 export { actionCreators };

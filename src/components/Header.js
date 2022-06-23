@@ -7,11 +7,18 @@ import ".././App.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import KurlyLogo from "../static/logo.jpeg";
+import { logoutDB } from "../redux/moduels/user";
+
 
 const Header = () => {
   const islogin = useSelector((state) => state.user.is_login);
   const user = useSelector((state) => state.user.user);
   console.log(islogin, user);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(logoutDB())
+  }
 
   return (
     <HeaderWrap>
@@ -30,9 +37,9 @@ const Header = () => {
           {islogin ? (
             <div>
               <HeaderMenu>
-                <PurpleText>${user.username} 님</PurpleText>
+                <PurpleText>{user?.nickname} 님</PurpleText>
               </HeaderMenu>
-              | <HeaderMenu> 로그아웃</HeaderMenu>
+              | <HeaderMenu onClick={logout}> 로그아웃</HeaderMenu>
               |<HeaderMenu>고객센터 &nbsp; &#9662;</HeaderMenu>
             </div>
           ) : (
