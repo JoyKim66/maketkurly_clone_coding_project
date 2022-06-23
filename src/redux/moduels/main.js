@@ -11,7 +11,7 @@ const GET_SLIDER = "GET_SLIDER";
 
 //Action Creator
 const getCard = createAction(GET_CARD,(card) => ({card}));
-const getSlider = createAction(GET_CARD,(slider) => ({slider}));
+const getSlider = createAction(GET_SLIDER,(slider) => ({slider}));
 
 //initailstate
 const initailState = {
@@ -60,7 +60,17 @@ export default handleActions(
             // console.log("draft::",draft);
             draft.card = action.payload.card;
             // console.log(draft.card);
-        })
+        }),
+        
+        [GET_SLIDER]:(state,action) => 
+            produce(state,(draft) => {
+                // console.log("state::",state);
+                // console.log("action::",action);
+                // console.log("draft::",draft);
+                draft.slider = action.payload.slider;
+                // console.log(draft.card);
+            })
+
 
     },
     initailState
