@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const SlideCard = ({card}) => {
     // console.log('card',card);
+    const navigate = useNavigate();
+
     return(
-        <CardDiv>
+        <CardDiv onClick={() => navigate("/products/"+card.id+"/index/1")}>
         <ImgDiv>
             <CartImg src="https://s3.ap-northeast-2.amazonaws.com/res.kurly.com/kurly/ico/2021/cart_white_45_45.svg"/>
             <Img
@@ -31,6 +34,9 @@ const ImgDiv = styled.div`
     display: flex;
     background: #fff;
     position: relative;
+    &:hover {
+        cursor: pointer;
+      }
 `;
 const CartImg = styled.img`
     position: absolute;
