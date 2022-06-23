@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import MenuNew from "../../static/menu-new.png";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../../redux/moduels/post";
+
+import MenuNew from "../../static/menu-new.png";
 import CategoryItem from "./CategoryItem";
 
 const Category = (props) => {
@@ -12,7 +13,6 @@ const Category = (props) => {
 
   //메인페이지 로드
   React.useEffect(() => {
-    
     dispatch(postActions.getPostDB());
   }, []);
 
@@ -26,7 +26,6 @@ const Category = (props) => {
       </a>
 
       <span>신상품</span>
-
       {/* post 목록 */}
       <Products>
         {products.map((card) => (
@@ -35,7 +34,7 @@ const Category = (props) => {
       </Products>
     </CategoryWrap>
   );
-}
+};
 
 const CategoryWrap = styled.div`
   // background-color: rgb(0, 0, 0, 0.05);

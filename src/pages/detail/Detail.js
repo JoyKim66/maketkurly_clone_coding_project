@@ -1,22 +1,19 @@
 // 상세페이지 메인
 import React from "react";
 import styled from "styled-components";
+import { useLocation, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../../redux/moduels/post";
+
 import ProductMain from "./ProductMain";
 import ProductDetail from "./ProductDetail";
-import queryString from "query-string";
-import { useLocation, useParams } from "react-router-dom";
 
 const Detail = (props) => {
-  // - params 가져오기
+  // params 가져오기
   // /products/{productId}
   // /products/1에서 '1'을 읽음
-    const params = useParams();
-    const id = params.productId;
-//   const location = useLocation();
-//   const sch = location.search;
-//   console.log(sch);
-//   const params = new URLSearchParams(sch);
-//   const productId = params.get("productId");
+  const params = useParams();
+  const id = params.productId;
   console.log(id);
 
   return (

@@ -2,19 +2,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios"; 
+import { apis } from "../../api/index";
+
 import ReviewDetail from "./ReviewDetail";
-import axios from "axios"; //
-import Pagination from "./Pagination"; //
+import Pagination from "./Pagination"; 
 
 const Review = (props) => {
   const navigate = useNavigate();
-  // - params 가져오기
-  // /products/{productId}
-  // /products/1에서 '1'을 읽음
   const params = useParams();
   const productId = params.productId;
 
-  //
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,10 +21,14 @@ const Review = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const response = await axios.get(
-        "https://jsonplaceholder.typicode.com/posts"
-      );
-      setPosts(response.data);
+      //   const response = await axios.get(
+      //     "https://jsonplaceholder.typicode.com/posts"
+      //   );
+      await apis.productDetail(productId).then((res) => {
+        console.log(res.data.reviews, "sub page review data");
+        setPosts(res.data.reviews);
+      });
+
       setLoading(false);
     };
     fetchData();
@@ -40,37 +42,7 @@ const Review = (props) => {
     let currentPosts = 0;
     currentPosts = posts.slice(indexOfFirst, indexOfLast);
     return currentPosts;
-  }; //
-
-  const [item, setItem] = useState([
-    {
-      reviewId: 1,
-      commentTitle: "폴바셋 돌체라떼 너무 맛있어요",
-      commentDetail: "폴바셋 역시 맛있어요",
-      imageFile:
-        "https://www.baristapaulbassett.co.kr/upload/product/A/thumbnail_1_201903211107237211.jpg",
-      name: "jin",
-      createdAt: "2022-06-21",
-    },
-    {
-      reviewId: 2,
-      commentTitle: "폴바셋 돌체라떼 너무 맛나요",
-      commentDetail: "폴바셋 역시 맛있어요",
-      imageFile:
-        "https://www.baristapaulbassett.co.kr/upload/product/A/thumbnail_1_201903211107237211.jpg",
-      name: "jenny",
-      createdAt: "2022-06-21",
-    },
-    {
-      reviewId: 3,
-      commentTitle: "폴바셋 돌체라떼 너무 맛나요",
-      commentDetail: "폴바셋 역시 맛있어요",
-      imageFile:
-        "https://www.baristapaulbassett.co.kr/upload/product/A/thumbnail_1_201903211107237211.jpg",
-      name: "jenny",
-      createdAt: "2022-06-21",
-    },
-  ]);
+  }; 
 
   return (
     <ReviewWrap>
@@ -84,42 +56,22 @@ const Review = (props) => {
           내 1:1 문의에 남겨주세요.
         </div>
       </ReviewNotice>
-      {/* <ReviewTable>
-        <tbody>
-          <tr>
-            <Td>번호</Td>
-            <Td>제목</Td>
-            <Td>작성자</Td>
-            <Td>작성일</Td>
-          </tr>
-          {item.map((res) => (
-            <tr>
-              <Td>{res.reviewId}</Td>
-              <Td style={{ textAlign: "left" }}>{res.commentTitle}</Td>
-              <Td>{res.name}</Td>
-              <Td>{res.createdAt}</Td>
-            </tr>
-          ))}
-        </tbody>
-      </ReviewTable>*/}
 
       <div>
         <ReviewDetail posts={currentPosts(posts)} loading={loading} />
         <ReviewWriteBtn
-        onClick={() => {
-          navigate("/products/" + productId + "/review");
-        }}
-      >
-        후기쓰기
-      </ReviewWriteBtn>
+          onClick={() => {
+            navigate("/products/" + productId + "/review");
+          }}
+        >
+          후기쓰기
+        </ReviewWriteBtn>
         <Pagination
           postsPerPage={postsPerPage}
           totalPosts={posts.length}
           paginate={setCurrentPage}
         />
       </div>
-
-      
     </ReviewWrap>
   );
 };

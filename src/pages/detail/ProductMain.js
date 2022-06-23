@@ -1,28 +1,27 @@
-// 상세페이지 메인
-// ProductOrder css
-import React, { useState } from "react";
+// 상세페이지 상단 메인 부분
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../../redux/moduels/post";
 import { addCartDB } from "../../redux/moduels/cart";
 import { useNavigate } from "react-router-dom";
 
+// 수량에 따른 금액 계산 함수
 const Sum = (price, num) => {
   return price * num;
 };
 
-
 const ProductMain = ({ id }) => {
-  console.log(id);
+  // 전체 상품에서 클릭한 해당 상품 id 불러옴
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const data2 = useSelector((state) => state.post.detail_post);
-  console.log(data2);
+  const data = useSelector((state) => state.post.detail_post);
+  console.log(data);
 
   const [item, setItem] = useState({
     productId: 1,
     productName: "[폴 바셋] 바리스타 돌체라떼 300ml",
-    subTitle: "간편하게 맛보는 달콤한 풍미",
+    subtitle: "간편하게 맛보는 달콤한 풍미",
     salesUnit: "1개",
     weight: "330ml",
     shippingCategory: "샛별배송/택배배송",
@@ -34,30 +33,31 @@ const ProductMain = ({ id }) => {
       "https://www.baristapaulbassett.co.kr/upload/product/A/thumbnail_1_201903211107237211.jpg",
     productPrice: 20000,
   });
-  console.log(item);
-  const data = item;
 
-  //장바구니 담기 
+  //장바구니 담기
   const AddCart = () => {
-      dispatch(addCartDB({
-      productId:data.productId,
-      quantity: num,
-      totalPrice: Sum(data.productPrice, num),
-    },() => navigate("/cart")))
+    dispatch(
+      addCartDB(
+        {
+          productId: item.productId,
+          quantity: num,
+          totalPrice: Sum(item.productPrice, num),
+        },
+        () => navigate("/cart")
+      )
+    );
   };
-  
 
-  //상세페이지 로드 로드
-  React.useEffect(() => {
+  // 해당 id값 상세 정보 불러오기
+  useEffect(() => {
     dispatch(postActions.detailPostDB(id));
   }, []);
-
-  React.useEffect(() => {
-    setItem(data2);
+  useEffect(() => {
+    setItem(data);
     console.log(item);
-  }, [data2]);
+  }, [data]);
 
-  //수량체크 및 가격반영
+  // 구매수량 선택하는 부분
   const [num, setNum] = useState(1);
   const upCount = () => {
     setNum(num + 1);
@@ -76,10 +76,10 @@ const ProductMain = ({ id }) => {
       <ProductAbout>
         <ProductName>
           <NameTitle>{item.productName}</NameTitle>
-          <NameDetail>{item.subTitle}</NameDetail>
+          <NameDetail>{item.subtitle}</NameDetail>
         </ProductName>
         <ProductPrice>
-          {data.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          {item.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           <span
             style={{
               fontSize: "16px",
@@ -137,7 +137,7 @@ const ProductMain = ({ id }) => {
           <TotalPrice>
             총 상품금액 :{" "}
             <Price>
-              {Sum(data.productPrice, num)
+              {Sum(item.productPrice, num)
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </Price>
@@ -148,7 +148,6 @@ const ProductMain = ({ id }) => {
               로그인 후, 적립혜택 제공
             </span>
           </TotalPrice>
-
           <AddCartBtn onClick={AddCart}>장바구니 담기</AddCartBtn>
         </ProductOrder>
       </ProductAbout>
@@ -168,7 +167,7 @@ const ProductImage = styled.img`
 `;
 
 const ProductAbout = styled.div`
-    // background-color: rgb(0, 0, 0, 0.1);
+  // background-color: rgb(0, 0, 0, 0.1);
   width: 53%;
   text-align: left;
   padding-left: 4px;
@@ -276,7 +275,6 @@ const AddCartBtn = styled.div`
   text-align: center;
   font-weight: bold;
   font-size: 16px;
-  //   float: right;
   padding-top: 16px;
   margin-top: 16px;
   &:hover {
