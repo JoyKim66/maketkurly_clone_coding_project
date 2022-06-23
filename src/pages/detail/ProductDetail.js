@@ -1,29 +1,34 @@
 // 상세페이지 상세정보
-// 후기쓰기 버튼 css
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-scroll";
-import Review from "./Review";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../../redux/moduels/post";
+import { apis } from "../../api/index";
+
 import detailImg from "../../static/detail.png";
+import Review from "./Review";
 
+const ProductDetail = ({ id }) => {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.post.detail_post);
+  console.log(data);
 
-const ProductDetail = () => {
+  const [item, setItem] = useState({});
 
-  const [item, setItem] = useState([
-    {
-      productId: 1,
-      productName: "[폴 바셋] 바리스타 돌체라떼 300ml",
-      subTitle: "간편하게 맛보는 달콤한 풍미",
-      imageUrl:
-        "https://m.upinews.kr/data/upi/image/2021/06/03/upi202106030169.jpg",
-      content:
-        "간편하게 맛보는 달콤한 풍미간편하게 맛보는 달콤한 풍미간편하게 맛보는 달콤한 풍미간편하게 맛보는 달콤한 풍미간편하게 맛보는 달콤한 풍미간편하게 맛보는 달콤한 풍미간편하게 맛보는 달콤한 풍미",
-    },
-  ]);
+  // 해당 id값 상세 정보 불러오기
+  useEffect(() => {
+    dispatch(postActions.detailPostDB(id));
+  }, []);
+  useEffect(() => {
+    setItem(data);
+    console.log(item);
+  }, [data]);
 
   return (
     <ProductDetailWrap>
       <React.Fragment>
+        {/* 상세페이지 카테고리 메뉴 */}
         <DetailMenu>
           <Link to="1" spy={true} smooth={true}>
             <div>상품설명</div>
@@ -40,23 +45,25 @@ const ProductDetail = () => {
         </DetailMenu>
       </React.Fragment>
 
+      {/* 상품설명 부분 */}
       <DetailWrap id="1">
-        <img src={item[0].imageUrl} alt="detail" width="100%" />
+        <img src={item.imageUrl} alt="detail" width="100%" />
         <DetailTitle>
-          {item[0].subTitle} <br />
-          <span style={{ fontSize: "36px" }}>{item[0].productName}</span>
+          {item.subtitle} <br />
+          <span style={{ fontSize: "36px" }}>{item.productName}</span>
         </DetailTitle>
         <Line />
-        <DetailContent>{item[0].content}</DetailContent>
+        <DetailContent>{item.contentDetail}</DetailContent>
       </DetailWrap>
 
+      {/* 상세정보 부분 */}
       <ImgWrap id="2" src={detailImg} />
       <Line style={{ opacity: "0.2" }} />
 
+      {/* 후기 부분 */}
       <ReviewWrap id="3">
         <Review />
       </ReviewWrap>
-
     </ProductDetailWrap>
   );
 };

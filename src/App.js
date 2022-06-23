@@ -14,7 +14,6 @@ import Detail from "./pages/detail/Detail";
 import ReviewWrite from "./pages/ReviewWrite";
 import Category from "./pages/category/Category";
 
-
 function App() {
   return (
     <div className="App">

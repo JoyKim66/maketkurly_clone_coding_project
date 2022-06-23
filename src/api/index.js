@@ -9,9 +9,6 @@ const api = axios.create({
 export const apis = {
 
 	// product
-	// productDetail: (productId) => api.get(`/products/${productId}`),
     productList: () => api.get(`/api/products`),
     productDetail: (productId) => api.get(`/api/products/${productId}/index/1`)
-    // productDetail: (product_id) => api.get(`/api/products/${product_id}`),
-    // `http://3.38.153.67/api/products?productId=${pid}`,
 };

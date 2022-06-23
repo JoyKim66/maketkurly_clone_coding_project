@@ -8,15 +8,17 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   }
   return (
     <div>
-      <nav>
+      {pageNumbers.length !== 0 ? (
         <PageUl className="pagination">
           {pageNumbers.map((number) => (
             <PageLi key={number} onClick={() => paginate(number)}>
-                {number}
+              {number}
             </PageLi>
           ))}
         </PageUl>
-      </nav>
+      ) : (
+        <div>등록된 후기가 없습니다.</div>
+      )}
     </div>
   );
 };
@@ -26,8 +28,8 @@ const PageUl = styled.ul`
   width: 60%;
   margin: 0 auto 60px auto;
   padding: 2px;
-  border-top: 1px solid rgb(0,0,0, 0.2);
-  border-bottom: 1px solid rgb(0,0,0, 0.2);
+  border-top: 1px solid rgb(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgb(0, 0, 0, 0.2);
 `;
 
 const PageLi = styled.li`
