@@ -23,7 +23,9 @@ BE - 박성규,이호진,박종연
 
 - 메인페이지 : 상단및 카드 이미지 슬라이드
 
-- 장바구니 : 개별 수량조절 및 가격조절, 개별 수량체크, 전체 수량체크, 장바구니 목록 불러오기,추가하기,삭제하기 
+- 장바구니 : 개별 수량조절 및 가격조절, 개별 수량체크, 전체 수량체크, 장바구니 목록 불러오기,추가하기,삭제하기 <br><br><br>
+
+---
 
 ![회원가입](https://blog.kakaocdn.net/dn/ecUg82/btrFBg9FHcM/K9Oy2aeJLh04aegrlN0lAk/img.gif)
 
@@ -35,12 +37,12 @@ BE - 박성규,이호진,박종연
 
 - 주소 검색은 카카오 우편번호 API를 붙여서 주소를 가져오고 그 주소를 입력하면 주소 창이 사용자가 입력한 주소로 변하게 뷰를 구현하였습니다
 
-- 가입하기 버튼을 누를땐 모든 유효성검사를 검사하고 중복확인검사해서 유효하지 않을시 가입을 할 수 없게 하였습니다.<br>
+- 가입하기 버튼을 누를땐 모든 유효성검사를 검사하고 중복확인검사해서 유효하지 않을시 가입을 할 수 없게 하였습니다.<br><br><br>
 
-![메인1](https://blog.kakaocdn.net/dn/rNwTy/btrFBhALakK/qQUEZTJ1bmae0xEU36KaR1/img.gif)
-![메인2](https://blog.kakaocdn.net/dn/8KBzA/btrFCh77KsS/F0iJAhsMkULpgSxxi9HBKK/img.gif)
 
-- 메인뷰는 swiper 패키지를 사용하여 서버에서 받아온 이미지를 슬라이드 할수 있게 구현하였습니다.
+![dd](https://blog.kakaocdn.net/dn/21QH4/btrOzglQ5Bu/LiMJ40bEBB0l10LMImmgFk/img.gif)
+
+- 메인뷰는 swiper 패키지를 사용하여 서버에서 받아온 이미지를 슬라이드 할수 있게 구현하였습니다.<br><br><br>
 
 
 ![장바구니](https://blog.kakaocdn.net/dn/clLBrp/btrFBi0JUcV/1g5sQKC7pGQd5fR676p0yK/img.gif)
@@ -56,7 +58,7 @@ BE - 박성규,이호진,박종연
 
 - 각각의 상품을 삭제할 수 있습니다.
 
-- 배송지를 선택하지 않으면 주문할 수 없게 하였습니다.
+- 배송지를 선택하지 않으면 주문할 수 없게 했습니다.<br><br><br>
 
 
 ## 3.기술스택
@@ -69,4 +71,8 @@ BE - 박성규,이호진,박종연
 - redux
 - axios
 <br />
+
+## 4.Trouble shooting
+
+- **[장바구니 view의 Time Issue](https://spice-hoodie-f35.notion.site/Time-Issue-7dafbc3a71cd4bbfa910216384c410c5)<br>**
 
